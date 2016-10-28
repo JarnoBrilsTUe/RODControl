@@ -6,7 +6,7 @@ public class RODStatus {
 
 	public double servoBaseRot = 110;
 	public int servoLower = 90;
-	public int servoUpper;
+	public int servoUpper = 90;
 	public int servoHandRot = 90;
 	public int servoFingers = 90;
 }

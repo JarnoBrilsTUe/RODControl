@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultCaret;
 
 import com.github.sarxos.webcam.Webcam;
@@ -33,6 +35,8 @@ public class GUI extends JFrame {
 	public static final String lineBreak = System.getProperty("line.separator");
 
 	public static final boolean debug = false;
+	
+	public static final boolean keyboardMode = true;
 
 	private static String address = "192.168.50.248";
 
@@ -85,6 +89,36 @@ public class GUI extends JFrame {
 				inputField.setText("");
 			}
 		});
+		if (keyboardMode) {
+			inputField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					update();
+				}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					update();
+				}
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					update();
+				}
+				
+				private void update() {
+					String command = inputField.getText();
+					if (command.length() > 0 && conn != null) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								commandProcessor.executeShortCommand(command);
+								logArea.append(command + "\n");
+								inputField.setText("");
+							}
+						});
+					}
+				}
+			});
+		}
 		JTextField addressField = new JTextField(address);
 		JButton connectBtn = new JButton("Connect");
 		connectBtn.addActionListener(new ActionListener() {
@@ -145,7 +179,8 @@ public class GUI extends JFrame {
 
 		commandProcessor = new CommandProcessor(conn, status);
 
-		controllerProcessor = new ControllerProcessor(commandProcessor);
+		if (!keyboardMode)
+			controllerProcessor = new ControllerProcessor(commandProcessor);
 
 		if (!debug) {
 			try {
@@ -162,7 +197,8 @@ public class GUI extends JFrame {
 		this.setVisible(true);
 		this.pack();
 
-		controllerProcessor.start();
+		if (!keyboardMode)
+			controllerProcessor.start();
 	}
 
 	private class InputChangeListener implements ChangeListener {

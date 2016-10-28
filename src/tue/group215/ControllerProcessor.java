@@ -266,6 +266,8 @@ public class ControllerProcessor extends Thread {
 		rightUpdated = false;
 		dirUpdated = false;
 		lrUpdated = false;
+		
+		cmd.flush();
 	}
 
 }

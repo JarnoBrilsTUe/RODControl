@@ -170,17 +170,75 @@ public class CommandProcessor {
 		write(command);
 	}
 
-	private synchronized void write(String command) {
+	private void write(String command) {
 		//if (!command.startsWith("m"))
 			System.out.println(command);
 		if (!GUI.debug) {
 			conn.write(command);
 		}
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	}
+	
+	public void flush() {
+		conn.flush();
+	}
+
+	public void executeShortCommand(String command) {
+		switch(command) {
+		//camera
+		case "w":
+			executeCommand("lookver " + (int) --status.gimbalY);
+			break;
+		case "s":
+			executeCommand("lookver " + (int) ++status.gimbalY);
+			break;
+		case "a":
+			executeCommand("lookhor " + (int) ++status.gimbalX);
+			break;
+		case "d":
+			executeCommand("lookhor " + (int) --status.gimbalX);
+			break;
+			
+		//movement
+		case "8":
+			executeCommand("forward " + 1000);
+			break;
+		case "2":
+			executeCommand("backward " + 1000);
+			break;
+		case "4":
+			executeCommand("left " + 1000);
+			break;
+		case "6":
+			executeCommand("right " + 1000);
+			break;
+		case "5":
+			executeCommand("stop");
+			break;
+			
+		//hand
+		case "n":
+			executeCommand("hand " + --status.servoFingers);
+			break;
+		case "m":
+			executeCommand("hand " + ++status.servoFingers);
+			break;
+			
+		//hand rotation
+		case "j":
+			executeCommand("rotatehand " + --status.servoHandRot);
+			break;
+		case "k":
+			executeCommand("rotatehand " + ++status.servoHandRot);
+			break;
+			
+		//arm extension
+		case "i":
+			executeCommand("extendup " + --status.servoUpper);
+			break;
+		case "o":
+			executeCommand("extendup " + ++status.servoUpper);
 		}
+		conn.flush();
 	}
 
 }

@@ -24,6 +24,9 @@ public class Connection {
 	private Socket socket;
 	private PrintWriter out;
 	private InputReader reader;
+	
+	private long nextTime = 0;
+	private int timeOut = 100;
 
 	/**
 	 * Constructor, establishes socket and streams
@@ -69,7 +72,15 @@ public class Connection {
 	 * @param message
 	 */
 	public void write(String message) {
-		out.print(message);
+		if (System.currentTimeMillis() >= nextTime) {
+			out.print(message);
+			nextTime = System.currentTimeMillis() + timeOut;
+		} else {
+			System.out.println("Did not send message: " + message);
+		}
+	}
+	
+	public void flush() {
 		out.flush();
 	}
 
