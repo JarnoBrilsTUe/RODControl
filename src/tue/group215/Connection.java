@@ -72,12 +72,12 @@ public class Connection {
 	 * @param message
 	 */
 	public void write(String message) {
-		if (System.currentTimeMillis() >= nextTime) {
+		//if (System.currentTimeMillis() >= nextTime) {
 			out.print(message);
 			nextTime = System.currentTimeMillis() + timeOut;
-		} else {
+		/*} else {
 			System.out.println("Did not send message: " + message);
-		}
+		}*/
 	}
 	
 	public void flush() {

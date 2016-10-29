@@ -21,6 +21,9 @@ public class CommandProcessor {
 	private static final String upperExtend = "3";
 	private static final String handRotate = "4";
 	private static final String handClose = "5";
+	
+	// The reset command
+	private static final String reset = "z";
 
 	public CommandProcessor(Connection conn, RODStatus status) {
 		this.conn = conn;
@@ -162,6 +165,11 @@ public class CommandProcessor {
 			write(message);
 			status.servoFingers = value;
 			return;
+			
+		case "reset":
+			message = reset;
+			write(message);
+			return;
 
 		// TODO: custom commands
 		}
@@ -237,6 +245,12 @@ public class CommandProcessor {
 			break;
 		case "o":
 			executeCommand("extendup " + ++status.servoUpper);
+			break;
+			
+		//reset
+		case "r":
+			//executeCommand("reset");
+			break;
 		}
 		conn.flush();
 	}

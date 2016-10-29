@@ -36,7 +36,7 @@ public class GUI extends JFrame {
 
 	public static final boolean debug = false;
 	
-	public static final boolean keyboardMode = true;
+	public static final boolean keyboardMode = false;
 
 	private static String address = "192.168.50.248";
 

@@ -191,8 +191,8 @@ public class ControllerProcessor extends Thread {
 			double xOrig = cmd.status.gimbalX;
 			double yOrig = cmd.status.gimbalY;
 
-			double x = xOrig - (rightX * 5); // x is inverted
-			double y = yOrig + (rightY * 5);
+			double x = xOrig - (rightX); // x is inverted
+			double y = yOrig + (rightY);
 
 			cmd.status.gimbalX = x;
 			cmd.status.gimbalY = y;
